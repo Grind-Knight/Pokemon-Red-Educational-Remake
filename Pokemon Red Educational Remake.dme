@@ -15,5 +15,10 @@
 
 // BEGIN_INCLUDE
 #include "Pokemon Red Educational Remake.dm"
+#include "Code\Globals\_NOTES.dm"
+#include "Code\Globals\World_Globals.dm"
+#include "Code\Globals\World_New.dm"
+#include "Code\Turfs\Outdoor.dm"
+#include "Maps\Overworld\Kanto.dmm"
 // END_INCLUDE
 
