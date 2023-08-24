@@ -3,3 +3,4 @@ This file should contain all global #define's for things so that the rest of you
 */ 
 world 
 	icon_size = 16
+	view = "11x11"

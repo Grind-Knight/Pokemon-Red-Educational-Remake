@@ -18,7 +18,8 @@
 #include "Code\Globals\_NOTES.dm"
 #include "Code\Globals\World_Globals.dm"
 #include "Code\Globals\World_New.dm"
-#include "Code\Turfs\Outdoor.dm"
+#include "Code\Objects\Overworld Objs.dm"
+#include "Code\Turfs\Turfs.dm"
 #include "Maps\Overworld\Kanto.dmm"
 // END_INCLUDE
 
