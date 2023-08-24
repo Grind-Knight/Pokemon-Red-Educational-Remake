@@ -85,8 +85,8 @@ This project is licensed under the GNU General Public License v3 (GPLv3) - see t
 
 ## Acknowledgments
 
-- Thanks to all the community members and mentors for their support and dedication.
 - Special thanks to Nintendo and Game Freak for the original Pokémon Red game.
+- Thanks to every community member that has offered their help and support along the way.
 
 ---
 
