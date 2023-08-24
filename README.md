@@ -24,7 +24,7 @@ The Pokémon Red Educational Remake project is more than just a clone of the cla
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your-organization/Pokemon-Red-Educational-Remake.git`
+1. Clone the repository: `git clone https://github.com/Grind-Knight/Pokemon-Red-Educational-Remake.git`
 2. Open the project using Dream Maker.
 3. Compile and run the game.
 
