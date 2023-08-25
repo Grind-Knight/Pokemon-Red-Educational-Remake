@@ -14,3 +14,8 @@ client
 var
 	list/mob/player/players_in_world = list()
 	list/mob/player/moving_players = list()
+
+mob
+	pixel_y = 4
+
+#define TELEPORT_FLAG "teleporting"

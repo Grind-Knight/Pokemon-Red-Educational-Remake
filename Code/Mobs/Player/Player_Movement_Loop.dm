@@ -13,6 +13,14 @@ mob
 		Change_Speed(n as num)
 			walking_speed = n
 
+mob
+	proc
+		CanMove()
+			if(!flags[TELEPORT_FLAG])
+				return TRUE
+			else
+				return FALSE
+
 client
 	proc
 		Player_Movement_Loop()
@@ -29,6 +37,8 @@ client
 
 				// Reset the movement counter to introduce delay
 				movement_counter = src.mob.walking_speed
-				step(src.mob, d)
+
+				if(mob.CanMove())
+					step(src.mob, d)
 				// Reset the queued direction after moving
 				src.mob.queued_direction = 0

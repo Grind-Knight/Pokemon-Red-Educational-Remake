@@ -12,6 +12,8 @@
 #define FILE_DIR "Assets/Sprites/Mobs"
 #define FILE_DIR "Assets/Sprites/Objects"
 #define FILE_DIR "Assets/Sprites/Objects/Buildings"
+#define FILE_DIR "Assets/Sprites/Objects/Indoor Objects"
+#define FILE_DIR "Assets/Sprites/Objects/Outdoor Objects"
 #define FILE_DIR "Assets/Sprites/Turfs"
 // END_FILE_DIR
 
@@ -22,13 +24,17 @@
 // BEGIN_INCLUDE
 #include "Pokemon Red Educational Remake.dm"
 #include "Code\Client\UI\Client_Controls.dm"
+#include "Code\Client\UI\HUD.dm"
 #include "Code\Globals\_NOTES.dm"
 #include "Code\Globals\World_Globals.dm"
 #include "Code\Globals\World_Loop.dm"
 #include "Code\Globals\World_New.dm"
+#include "Code\Mobs\Mob_Vars.dm"
 #include "Code\Mobs\Player\Player_Login.dm"
 #include "Code\Mobs\Player\Player_Movement_Loop.dm"
+#include "Code\Objects\Overworld Objs.dm"
 #include "Code\Turfs\Outdoor.dm"
+#include "Code\Turfs\Turfs.dm"
 #include "Maps\Overworld\Kanto.dmm"
 // END_INCLUDE
 
