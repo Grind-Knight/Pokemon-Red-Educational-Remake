@@ -1,25 +1,36 @@
+// Define the plane_master object
+obj/plane_master
+	appearance_flags = PLANE_MASTER
+	screen_loc = "CENTER,CENTER"
+
 client
 	var
+		obj/interface_overlay = new // The main UI overlay object
+		obj/plane_master/overlay_plane_master = new // Creates a new plane master object
 		color_filter // Variable to store the client's color filter
 
-	New() // Client constructor
-		. = ..() // Calls the parent constructor
-		var/obj/plane_master = new // Creates a new plane master object
-		screen += plane_master // Adds the plane master to the client's screen
-		plane_master.appearance_flags = PLANE_MASTER // Sets the appearance flags to PLANE_MASTER
-		plane_master.screen_loc = "CENTER,CENTER" // Centers the plane master on the client's screen
+	New()
+		. = ..()
+		screen.Add(interface_overlay) // Add interface_overlay to client's screen
+		screen.Add(overlay_plane_master) // Add plane_master to client's screen
 
-		// Adds a color filter to the plane master with RGB color space
-		plane_master.filters += filter(
+		// Add more UI elements to interface_overlay
+		//interface_overlay.vis_contents.Add(new/obj/inventory)
+		//interface_overlay.vis_contents.Add(new/obj/dialogue)
+		// etc.
+
+		// Add a color filter to the plane master
+		overlay_plane_master.filters += filter(
 			type = "color",
 			color = null,
 			space = FILTER_COLOR_RGB)
-		// Stores the reference to the color filter in the client's color_filter variable
-		color_filter = plane_master.filters[plane_master.filters.len]
+		// Store the reference to the color filter in the client's color_filter variable
+		color_filter = overlay_plane_master.filters[overlay_plane_master.filters.len]
+
 
 client
 	proc
-		FadeToBlack()
+		FadeToBlack(fade_time = 5)
 			var/list/color_matrix = list(
 				0, 0, 0,
 				0, 0, 0,
@@ -28,12 +39,12 @@ client
 			animate(
 				color_filter,
 				color = color_matrix,
-				time = 5
+				time = fade_time
 			)
 
 client
 	proc
-		FadeIn()
+		FadeIn(fade_time = 5)
 			var/list/color_matrix = list(
 				1, 0, 0,
 				0, 1, 0,
@@ -42,5 +53,5 @@ client
 			animate(
 				color_filter,
 				color = color_matrix,
-				time = 5
+				time = fade_time
 			)

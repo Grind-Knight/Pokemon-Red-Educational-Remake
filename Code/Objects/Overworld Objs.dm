@@ -8,12 +8,12 @@ obj
 			alpha = 0
 			
 proc
-	setup_dense_tiles(startingLoc, width, height, ignoreLoc = list())  						// Define procedure to set up dense tiles
-		for(var/i = 0; i < height; i++)  																// Loop over rows of grid
-			for(var/j = 0; j < width; j++)  																// Loop over columns of grid
-				var/newLoc = locate(startingLoc:x + j, startingLoc:y + i, startingLoc:z)  	// Compute location of new tile
-				if(!(newLoc in ignoreLoc))  																// Check if new location should be ignored
-					new/obj/dense_obj(newLoc)  															// Create new instance of DenseTileEmpty object at new location
+	setup_dense_tiles(startingLoc, width, height, ignoreLoc = list())
+		for(var/i = 0; i < height; i++)
+			for(var/j = 0; j < width; j++)
+				var/newLoc = locate(startingLoc:x + j, startingLoc:y + i, startingLoc:z)
+				if(!(newLoc in ignoreLoc))
+					new/obj/dense_obj(newLoc)
 
 obj
 	density = 1

@@ -4,7 +4,7 @@ This file should contain all global #define's for things so that the rest of you
 world
 	fps = 20
 	icon_size = 16
-	view = 11
+	view = 6
 
 	mob = /mob/player
 
