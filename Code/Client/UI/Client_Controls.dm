@@ -76,11 +76,19 @@ mob
             
             // Set the next movement direction
             next_move = new_direction
+
+         if("Escape")
+            client.StartButton()
+         
+         if("Tab")
+            client.SelectButton()
+
          if("Space")
-            src << "pressed space"
-            while(c.keys[key])
-               src << "HOLDING SPACE"
-               sleep(world.tick_lag)
+            client.InteractButton()
+         
+         if("V")
+            client.BackButton()
+
 
 mob
    KeyUp(key, client/c)
@@ -88,6 +96,3 @@ mob
          if("W", "A", "S", "D")
             // Determine the new movement direction based on the remaining keys being held down
             next_move = c.keys["W"] ? NORTH : c.keys["D"] ? EAST : c.keys["S"] ? SOUTH : c.keys["A"] ? WEST : 0
-         if("Space")
-            src << "released space"
-
