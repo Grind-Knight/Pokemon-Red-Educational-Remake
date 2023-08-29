@@ -10,7 +10,7 @@ obj/screen
 client
 	proc
 		AddToVisContentsAndMap(key as text, obj_type)
-			var/obj/created_instance = new obj_type
+			var/obj/created_instance = new obj_type (src)
 			interface_overlay.vis_contents.Add(created_instance)
 			vis_contents_map[key] = created_instance
 
@@ -27,6 +27,7 @@ client
 		screen.Add(overlay_plane_master) // Add plane_master to client's screen
 
 		AddToVisContentsAndMap("main_menu", /obj/hud/main_menu)
+		AddToVisContentsAndMap("cursor", /obj/hud/cursor)
 
 		// Add a color filter to the plane master
 		overlay_plane_master.filters += filter(
@@ -36,50 +37,66 @@ client
 		// Store the reference to the color filter in the client's color_filter variable
 		color_filter = overlay_plane_master.filters[overlay_plane_master.filters.len]
 
-
-
 obj/hud
 	icon = 'Assets/Sprites/UI/menu.dmi'
-	alpha = 0	// Menu's are closed by default.
+	appearance_flags = PIXEL_SCALE
 	var
 		title
-		menu_items	// List of items within the menu
+		list/menu_items = list()	// List of items within the menu
 
-obj/hud
+obj/hud/main_menu
 	New(loc)
 		. = ..()
+		alpha = 0	// Menu's are closed by default.
 		var/matrix/M = matrix()
 		M.Scale(0.1, 0.1)
 		animate(src, transform = M)
-
 
 obj/hud
 	proc
 		OpenMenu(client/C)
 			C.menu_stack += src
-			C.UpdateClientState("IN_MENU")
+
+			C.UpdateClientState(IN_MENU)
+
+			C.vis_contents_map["cursor"].alpha = 255
+			//C.vis_contents_map["cursor"].target = src
+
+			if(C.menu_stack.len)
+				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
+			else
+				C.vis_contents_map["cursor"].target = null
+				C.vis_contents_map["cursor"].alpha = 0
+
+
+			C.vis_contents_map["cursor"].current_pos = 1
+			C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
+
 			
 			var/matrix/M = matrix()
 			M.Scale(1, 1)
-			animate(src, alpha = 255, transform = M, time = 2)
-
+			animate(src, alpha = 255, transform = M, time = 1)
 
 obj/hud
 	proc
 		CloseMenu(client/C)
 			C.menu_stack -= src
-			C.UpdateClientState("IN_GAME")
+			C.UpdateClientState(IN_GAME)
+
+			if(C.menu_stack.len)
+				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
+			else
+				C.vis_contents_map["cursor"].target = null
+				C.vis_contents_map["cursor"].alpha = 0
 
 			var/matrix/M = matrix()
 			M.Scale(0.1, 0.1)
-			animate(src, alpha = 0, transform = M, time = 2)
+			animate(src, alpha = 0, transform = M, time = 1)
 
 obj/hud
 	proc
 		OnButtonPressStart(client/C)
 			world << "Pressed Start on [src]."
-
-			
 
 obj/hud
 	proc
@@ -96,20 +113,68 @@ obj/hud
 		OnButtonPressBack(client/C)
 			world << "Pressed Back on [src]."
 
+obj/hud/button	// Something that can be interacted with in the menu. A button.
+	maptext = "default"
+	maptext_width = 100
+	var/obj/hud/parent_menu
+
+
+obj/hud/button
+	proc
+		MoveCursor(client/C, move_time = world.tick_lag)	// Move the cursor to this menu (or button, mostly)
+			animate(
+				C.vis_contents_map["cursor"],
+				pixel_x = pixel_x + parent_menu.pixel_x + C.vis_contents_map["cursor"].offset_x,
+				pixel_y = pixel_y + parent_menu.pixel_y + C.vis_contents_map["cursor"].offset_y,
+				time = move_time
+			)
 
 
 obj/hud/main_menu
 	icon_state = "main"
 	pixel_x = 40
 	pixel_y = 48
+	menu_items = list("POKéDEX", "POKéMON", "ITEM", "TRAINER", "SAVE", "OPTION", "EXIT")
+	New(loc)
+		. = ..()
+		var/height_counter = 0
+		var/list/old_menu_items = menu_items
+		menu_items = list()
+		for(var/i in old_menu_items)
+			var/obj/hud/button/ic = new()
+			ic.parent_menu = src
+			ic.maptext = "<font size=1>[i]"
+			ic.pixel_x = 103
+			ic.pixel_y = 136 + height_counter
+			height_counter -= 16
+			menu_items += ic
+			vis_contents.Add(ic)
+
+		// for(var/i in menu_items)
+		// 	world << "[i]: [menu_items[i]]"
+
+obj/hud/cursor
+	icon = 'Assets/Sprites/UI/cursor.dmi'
+	icon_state = "filled"
+	alpha = 0	// Cursor is 'off' by default.
+	var
+		offset_x = -8
+		offset_y = 3
+		obj/hud/target = null
+		current_pos = 1
+
+client
+	verb
+		Menu_Down_Test()
+			if(!vis_contents_map["cursor"].target) return	// Only move down if we have a target.
+			if(vis_contents_map["cursor"].current_pos < vis_contents_map["cursor"].target.menu_items.len)
+				vis_contents_map["cursor"].current_pos++
+			else
+				vis_contents_map["cursor"].current_pos = 1
+			vis_contents_map["cursor"].target.menu_items[vis_contents_map["cursor"].current_pos].MoveCursor(src)
 
 
-
-
-
-
-
-
+//Client side effects for the screen. Fading in/out, color changes, etc.
 client
 	proc
 		FadeToBlack(fade_time = 5)

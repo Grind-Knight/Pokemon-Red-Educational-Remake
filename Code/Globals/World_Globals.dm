@@ -16,6 +16,7 @@ client
 var
 	list/extra_resources = list(\
 	'PKMN_RBYGSC.ttf'
+	//'PokemonGb-RAeo.ttf'
 	)
 
 	list/mob/player/players_in_world = list()
@@ -26,6 +27,11 @@ mob
 
 #define TELEPORT_FLAG "teleporting"
 
+//CLIENT STATES
+var
+	const
+		IN_GAME = "in_game"
+		IN_MENU = "in_menu"
 
 mob
 	verb

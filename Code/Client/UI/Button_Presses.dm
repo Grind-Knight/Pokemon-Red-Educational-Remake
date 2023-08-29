@@ -1,21 +1,9 @@
 client
    var
       tmp
-         client_state = "IN_GAME"
+         client_state = IN_GAME
 
          list/obj/hud/menu_stack = list()
-
-// client
-//    proc
-//       StartButton()
-//          world << "Pressed Start!"
-//          switch(current_menu_state)
-//             if(null, "Closed")
-//                vis_contents_map["main_menu"].OpenMenu()
-//                current_menu_state = "Main"
-//             if("Main")
-//                vis_contents_map["main_menu"].CloseMenu()
-//                current_menu_state = "Closed"
 
 client
    Stat()
@@ -39,14 +27,18 @@ client
    proc
       StartButton()
          switch(client_state)
-            if("IN_GAME")
+            if(IN_GAME)
                if(!menu_stack.len)
                   vis_contents_map["main_menu"].OpenMenu(src)  // Open the main menu if no menu is open
-            if("IN_MENU")
-               // in menu stuff
-               world << "in menu"
+            if(IN_MENU)
+               if(menu_stack.len)
+                  var/obj/hud/current_menu = menu_stack[menu_stack.len]
+                  current_menu.CloseMenu(src)
 
-         menu_stack[1].OnButtonPressStart(src)
+                  if(!menu_stack.len)
+                     UpdateClientState(IN_GAME)
+
+         //menu_stack[1].OnButtonPressStart(src)
 
 
 client
