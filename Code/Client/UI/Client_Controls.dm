@@ -67,15 +67,23 @@ mob
    KeyDown(key, client/c)
       switch(key)
          if("W", "A", "S", "D")
-            // Determine the direction based on the key pressed
-            var new_direction = key == "W" ? NORTH : key == "D" ? EAST : key == "S" ? SOUTH : key == "A" ? WEST : 0
-            
-            // If no other movement keys are being held down, set the queued direction
-            if(!(c.keys["W"] || c.keys["A"] || c.keys["S"] || c.keys["D"]))
-               queued_direction = new_direction
-            
-            // Set the next movement direction
-            next_move = new_direction
+            switch(c.client_state)
+               if(IN_GAME)
+                  // Determine the direction based on the key pressed
+                  var new_direction = key == "W" ? NORTH : key == "D" ? EAST : key == "S" ? SOUTH : key == "A" ? WEST : 0
+                  
+                  // If no other movement keys are being held down, set the queued direction
+                  if(!(c.keys["W"] || c.keys["A"] || c.keys["S"] || c.keys["D"]))
+                     queued_direction = new_direction
+                  
+                  // Set the next movement direction
+                  next_move = new_direction
+               if(IN_MENU)
+                  switch(key)
+                     if("W", "A")
+                        c.CursorMove(NORTH)
+                     if("S", "D")
+                        c.CursorMove(SOUTH)
 
          if("Escape")
             client.StartButton()

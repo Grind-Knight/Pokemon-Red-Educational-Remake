@@ -16,7 +16,7 @@ mob
 mob
 	proc
 		CanMove()
-			if(!flags[TELEPORT_FLAG])
+			if(!flags[TELEPORT_FLAG] && client.client_state == IN_GAME)
 				return TRUE
 			else
 				return FALSE

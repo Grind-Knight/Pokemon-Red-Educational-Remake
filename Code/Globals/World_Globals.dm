@@ -33,6 +33,11 @@ var
 		IN_GAME = "in_game"
 		IN_MENU = "in_menu"
 
+		HUD_LAYER = 100
+		MENU_LAYER = 101
+		BUTTON_LAYER = 102
+		CURSOR_LAYER = 103
+
 mob
 	verb
 		Test_Maptext(t as text)

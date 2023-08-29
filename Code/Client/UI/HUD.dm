@@ -26,8 +26,9 @@ client
 		screen.Add(interface_overlay) // Add interface_overlay to client's screen
 		screen.Add(overlay_plane_master) // Add plane_master to client's screen
 
-		AddToVisContentsAndMap("main_menu", /obj/hud/main_menu)
 		AddToVisContentsAndMap("cursor", /obj/hud/cursor)
+		AddToVisContentsAndMap("main_menu", /obj/hud/menu/main_menu)
+		AddToVisContentsAndMap("inventory", /obj/hud/menu/inventory)
 
 		// Add a color filter to the plane master
 		overlay_plane_master.filters += filter(
@@ -40,19 +41,32 @@ client
 obj/hud
 	icon = 'Assets/Sprites/UI/menu.dmi'
 	appearance_flags = PIXEL_SCALE
+	layer = HUD_LAYER
 	var
 		title
 		list/menu_items = list()	// List of items within the menu
 
-obj/hud/main_menu
-	New(loc)
+
+obj/hud/menu
+	layer = MENU_LAYER
+	New()
 		. = ..()
 		alpha = 0	// Menu's are closed by default.
 		var/matrix/M = matrix()
 		M.Scale(0.1, 0.1)
 		animate(src, transform = M)
 
-obj/hud
+
+obj/hud/menu
+	proc
+		ToggleMenu(client/C)
+			if(src in C.menu_stack)
+				CloseMenu(C)
+			else
+				OpenMenu(C)
+
+
+obj/hud/menu
 	proc
 		OpenMenu(client/C)
 			C.menu_stack += src
@@ -60,24 +74,21 @@ obj/hud
 			C.UpdateClientState(IN_MENU)
 
 			C.vis_contents_map["cursor"].alpha = 255
-			//C.vis_contents_map["cursor"].target = src
-
 			if(C.menu_stack.len)
+				//C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
 				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
 			else
 				C.vis_contents_map["cursor"].target = null
 				C.vis_contents_map["cursor"].alpha = 0
 
-
 			C.vis_contents_map["cursor"].current_pos = 1
-			C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
-
+			if(C.vis_contents_map["cursor"].target.menu_items.len) C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
 			
 			var/matrix/M = matrix()
 			M.Scale(1, 1)
 			animate(src, alpha = 255, transform = M, time = 1)
 
-obj/hud
+obj/hud/menu
 	proc
 		CloseMenu(client/C)
 			C.menu_stack -= src
@@ -116,7 +127,10 @@ obj/hud
 obj/hud/button	// Something that can be interacted with in the menu. A button.
 	maptext = "default"
 	maptext_width = 100
+	layer = BUTTON_LAYER
 	var/obj/hud/parent_menu
+	var
+		button_id
 
 
 obj/hud/button
@@ -130,7 +144,7 @@ obj/hud/button
 			)
 
 
-obj/hud/main_menu
+obj/hud/menu/main_menu
 	icon_state = "main"
 	pixel_x = 40
 	pixel_y = 48
@@ -143,6 +157,7 @@ obj/hud/main_menu
 		for(var/i in old_menu_items)
 			var/obj/hud/button/ic = new()
 			ic.parent_menu = src
+			ic.button_id = i
 			ic.maptext = "<font size=1>[i]"
 			ic.pixel_x = 103
 			ic.pixel_y = 136 + height_counter
@@ -153,10 +168,15 @@ obj/hud/main_menu
 		// for(var/i in menu_items)
 		// 	world << "[i]: [menu_items[i]]"
 
+obj/hud/menu/inventory
+	icon_state = "inventory"
+
+
 obj/hud/cursor
 	icon = 'Assets/Sprites/UI/cursor.dmi'
 	icon_state = "filled"
 	alpha = 0	// Cursor is 'off' by default.
+	layer = CURSOR_LAYER
 	var
 		offset_x = -8
 		offset_y = 3
@@ -166,12 +186,10 @@ obj/hud/cursor
 client
 	verb
 		Menu_Down_Test()
-			if(!vis_contents_map["cursor"].target) return	// Only move down if we have a target.
-			if(vis_contents_map["cursor"].current_pos < vis_contents_map["cursor"].target.menu_items.len)
-				vis_contents_map["cursor"].current_pos++
-			else
-				vis_contents_map["cursor"].current_pos = 1
-			vis_contents_map["cursor"].target.menu_items[vis_contents_map["cursor"].current_pos].MoveCursor(src)
+			CursorMove(SOUTH)
+
+		Menu_Up_Test()
+			CursorMove(NORTH)
 
 
 //Client side effects for the screen. Fading in/out, color changes, etc.
