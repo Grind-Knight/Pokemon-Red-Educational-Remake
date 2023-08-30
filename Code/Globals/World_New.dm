@@ -1,10 +1,8 @@
 /* 
 This file should contain everything that happens on World/New(). 
 */ 
-mob
-	Login()
-		loc = locate(101, 147, 1)
-		..()
-	
-	icon = 'Assets/Sprites/Mobs/character_overworld_sprites.dmi'
-	icon_state = "red"
+
+world
+   New()
+      . = ..()
+      spawn() World_Loop_Singleton()  //Start our global loop to handle everything.

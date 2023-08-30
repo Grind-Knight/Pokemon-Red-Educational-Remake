@@ -17,4 +17,3 @@ creature/test_creature
 
 	level
 	nickname
-//////////////______________//////////////

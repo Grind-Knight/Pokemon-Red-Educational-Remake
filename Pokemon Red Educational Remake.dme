@@ -7,6 +7,15 @@
 
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "Assets"
+#define FILE_DIR "Assets/Sprites"
+#define FILE_DIR "Assets/Sprites/Mobs"
+#define FILE_DIR "Assets/Sprites/Objects"
+#define FILE_DIR "Assets/Sprites/Objects/Buildings"
+#define FILE_DIR "Assets/Sprites/Objects/Indoor Objects"
+#define FILE_DIR "Assets/Sprites/Objects/Outdoor Objects"
+#define FILE_DIR "Assets/Sprites/Turfs"
+#define FILE_DIR "Assets/Sprites/UI"
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
@@ -15,19 +24,27 @@
 
 // BEGIN_INCLUDE
 #include "Pokemon Red Educational Remake.dm"
+#include "Code\Client\UI\Button_Presses.dm"
+#include "Code\Client\UI\Client_Controls.dm"
+#include "Code\Client\UI\HUD.dm"
 #include "Code\Globals\_NOTES.dm"
 #include "Code\Globals\World_Globals.dm"
+#include "Code\Globals\World_Loop.dm"
 #include "Code\Globals\World_New.dm"
-<<<<<<< Updated upstream
-=======
 #include "Code\Mobs\Mob_Vars.dm"
 #include "Code\Mobs\Creature_System\Creature_Manager.dm"
 #include "Code\Mobs\Creature_System\Creatures\0_Test_Creature.dm"
 #include "Code\Mobs\Creature_System\Creatures\Kanto Creatures.dm"
 #include "Code\Mobs\Player\Player_Login.dm"
 #include "Code\Mobs\Player\Player_Movement_Loop.dm"
->>>>>>> Stashed changes
+#include "Code\Items\Item_Core.dm"
+#include "Code\Mobs\Mob_Vars.dm"
+#include "Code\Mobs\Creature_System\Creature_Manager.dm"
+#include "Code\Mobs\Creature_System\Creatures\0_Test_Creature.dm"
+#include "Code\Mobs\Player\Player_Login.dm"
+#include "Code\Mobs\Player\Player_Movement_Loop.dm"
 #include "Code\Objects\Overworld Objs.dm"
+#include "Code\Turfs\Outdoor.dm"
 #include "Code\Turfs\Turfs.dm"
 #include "Maps\Overworld\Kanto.dmm"
 // END_INCLUDE
