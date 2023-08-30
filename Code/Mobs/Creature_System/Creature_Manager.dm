@@ -14,26 +14,29 @@ creature_manager
 
 creature
    var
+      //CONSTANTS
       name
-      nickname
-      number = 0
+      number = 000
       evolves_to
-      evolution_condition
-      experience_rate = 1
-      list/leveled_moves = list("move_name" = 10)  //move_name = level we learn it at
-      list/compatible_tm = list()
+      evolution_level
+      experience_tier = 3 //1=erratic, 2=fast, 3=medium fast, 4=medium slow, 5=slow, 6=fluctuating
+      list/leveled_moves = list()  //(level = "move name")
+      list/compatible_tm = list() //we cannot use 08 for a compatible TM; TM08 for example will have to check for 8 in the compatability list
+
       list/compatible_hm = list()
       list/creature_types = list("Fire", "Flying")
 
       // Stats
+      base_health
+      base_attack
+      base_defense
+      base_special
+      base_speed
+
       level
-      health
-      attack
-      defense
-      special
-      speed
+      nickname
 
 creature
    proc
       TotalStats()
-         return health + attack + defense + special + speed
+         return base_health + base_attack + base_defense + base_special + base_speed

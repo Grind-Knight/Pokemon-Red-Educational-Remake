@@ -1,19 +1,19 @@
 creature/test_creature
-   name = null
-   nickname
-   number = 0
-   evolves_to
-   evolution_condition
-   experience_rate = 1
-   list/leveled_moves = list()  //move_name = level we learn it at
-   list/compatible_tm = list()
-   list/compatible_hm = list()
-   list/creature_types = list()
+	name = null
+	number = 000
+	evolves_to
+	evolution_level
+	experience_tier = 3
+	list/leveled_moves = list()  
+	list/compatible_tm = list()
+	list/compatible_hm = list()
+	list/creature_types = list()
 
-   // Stats
-   level
-   health
-   attack
-   defense
-   special
-   speed
+	base_health 
+	base_attack 
+	base_defense 
+	base_special 
+	base_speed 
+
+	level
+	nickname
