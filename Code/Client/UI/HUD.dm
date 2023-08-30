@@ -183,14 +183,6 @@ obj/hud/cursor
 		obj/hud/target = null
 		current_pos = 1
 
-client
-	verb
-		Menu_Down_Test()
-			CursorMove(SOUTH)
-
-		Menu_Up_Test()
-			CursorMove(NORTH)
-
 
 //Client side effects for the screen. Fading in/out, color changes, etc.
 client

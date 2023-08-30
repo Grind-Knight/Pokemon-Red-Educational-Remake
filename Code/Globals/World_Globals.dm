@@ -2,7 +2,6 @@
 This file should contain all global #define's for things so that the rest of your code has access. 
 */
 
-
 world
 	fps = 20
 	icon_size = 16
@@ -27,12 +26,13 @@ mob
 
 #define TELEPORT_FLAG "teleporting"
 
-//CLIENT STATES
 var
 	const
+		//CLIENT STATES
 		IN_GAME = "in_game"
 		IN_MENU = "in_menu"
 
+		//LAYERS
 		HUD_LAYER = 100
 		MENU_LAYER = 101
 		BUTTON_LAYER = 102
