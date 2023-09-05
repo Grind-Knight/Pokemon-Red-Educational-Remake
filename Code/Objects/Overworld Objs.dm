@@ -8,38 +8,16 @@ obj
 			alpha = 100
 
 proc
-	setup_dense_tiles(startingLoc, width, height, ignoreLoc = list())
+	setup_dense_tiles(starting_loc, width, height, ignore_locs = list())
 		for(var/i = 0; i < height; i++)
 			for(var/j = 0; j < width; j++)
-				var/newLoc = locate(startingLoc:x + j, startingLoc:y + i, startingLoc:z)
-				if(!(newLoc in ignoreLoc)) new/obj/dense_obj(newLoc)
+				var/newLoc = locate(starting_loc:x + j, starting_loc:y + i, starting_loc:z)
+				if(!(newLoc in ignore_locs)) new/obj/dense_obj(newLoc)
 
 obj
 	density = 1	// All objects are dense by default so you can't walk through them.
 
 	// Later we will setup bound_width and bound_height on New() to make sure objects aren't limited to world size for bounding.
-
-obj
-	teleporter
-		proc
-			Teleport(mob/M)
-				set waitfor = FALSE	// Makes the proc function as if it was "spawned".
-				if(!M.flags[TELEPORT_FLAG])
-					var/old_dir = M.dir
-					M.flags[TELEPORT_FLAG] = TRUE
-
-					if(M.client) M.client.FadeToBlack()
-					sleep(5)
-
-					M.Move(locate(new_location[1], new_location[2], new_location[3]))
-					M.dir = old_dir
-
-					if(M.client) M.client.FadeIn()
-					sleep(3)
-					if(walk_direction) step(M, walk_direction)
-					sleep(3)
-
-					M.flags[TELEPORT_FLAG] = FALSE
 
 //Teleporter
 obj/teleporter
@@ -84,7 +62,6 @@ obj/teleporter
 				sleep(3)
 
 				M.flags[TELEPORT_FLAG] = FALSE	// No longer teleporting
-
 //End of teleporter
 
 
@@ -96,12 +73,16 @@ obj/buildings
 	var
 		tiles_wide = 1	// How wide we should set the density tiles for the building.
 		tiles_tall = 1	// How tall we should set the density tiles for the building.
-		list/door_loc = list(1, 1)	// The x/y coordinate of the door, relative to the bottom left (starting point) of the building.
+		list/door_locs = list(list(1, 1))	// The x/y coordinate of the door, relative to the bottom left (starting point) of the building.
 
 obj/buildings
 	New(loc)
 		. = ..()
-		setup_dense_tiles(loc, tiles_wide, tiles_tall, list(locate(x + door_loc[1] - 1, y + door_loc[2] - 1, z)))
+		var/ignore_locations = list()
+		for(var/list/d in door_locs)
+			var/doorLoc = locate(x + d[1] - 1, y + d[2] - 1, z)
+			ignore_locations += doorLoc
+		setup_dense_tiles(loc, tiles_wide, tiles_tall, ignore_locations)
 
 obj
 	buildings
@@ -109,32 +90,32 @@ obj
 			icon = 'Assets/Sprites/Objects/Buildings/64x32.dmi'
 			tiles_wide = 4
 			tiles_tall = 2
-			door_loc = list(2, 1)
+			door_locs = list(list(2, 1))
 		Four_by_Three
 			icon = 'Assets/Sprites/Objects/Buildings/64x48.dmi'
 			tiles_wide = 4
 			tiles_tall = 3
-			door_loc = list(2, 1)
+			door_locs = list(list(2, 1))
 		Four_by_Four
 			icon = 'Assets/Sprites/Objects/Buildings/64x64.dmi'
 			tiles_wide = 4
 			tiles_tall = 4
-			door_loc = list(2, 1)
+			door_locs = list(list(2, 1))
 		Six_by_Four
 			icon = 'Assets/Sprites/Objects/Buildings/96x64.dmi'
 			tiles_wide = 6
 			tiles_tall = 4
-			door_loc = list(3, 1)
+			door_locs = list(list(3, 1))
 		Eight_by_Six
 			icon = 'Assets/Sprites/Objects/Buildings/128x96.dmi'
 			tiles_wide = 8
 			tiles_tall = 6
-			door_loc = list(5, 1)
+			door_locs = list(list(5, 1))
 		Twelve_by_Six
 			icon = 'Assets/Sprites/Objects/Buildings/112x96.dmi'
 			tiles_wide = 12
 			tiles_tall = 6
-			door_loc = list(7, 1)
+			door_locs = list(list(7, 1))
 //End of buildings
 
 //Indoor objects
@@ -167,22 +148,22 @@ obj/buildings
 		icon = 'Assets/Sprites/Objects/Buildings/64x32.dmi'
 		tiles_wide = 4
 		tiles_tall = 2
-		door_loc = list(2, 1)
+		door_locs = list(list(2, 1))
 	Four_by_Three
 		icon = 'Assets/Sprites/Objects/Buildings/64x48.dmi'
 		tiles_wide = 4
 		tiles_tall = 3
-		door_loc = list(2, 1)
+		door_locs = list(list(2, 1))
 	Four_by_Four
 		icon = 'Assets/Sprites/Objects/Buildings/64x64.dmi'
 		tiles_wide = 4
 		tiles_tall = 4
-		door_loc = list(2, 1)
+		door_locs = list(list(2, 1), list(2, 4))
 	Six_by_Four
 		icon = 'Assets/Sprites/Objects/Buildings/96x64.dmi'
 		tiles_wide = 6
 		tiles_tall = 4
-		door_loc = list(3, 1)
+		door_locs = list(list(3, 1))
 //End of buildings
 
 //Indoor objects
