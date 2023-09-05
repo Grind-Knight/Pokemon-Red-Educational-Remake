@@ -30,6 +30,45 @@ item_manager
             i = new i
             items[i:name] = i
 
+mob
+   verb
+      Give_Item()
+         im_singleton.items["potion"].GiveItem(src)
+
+proc
+   pad_string_to_length(original, desired_length)
+      while(length(original) < desired_length)
+         original += " "
+      return original
+
+item
+   proc
+      GiveItem(mob/M)
+         //world << "Gave [src] to [M]!"
+         var/item_slot/slot = M.FindExistingOrEmptySlot(src)
+         if(slot)
+            if(!slot.stored_item)
+               slot.stored_item = src
+            slot.quantity++
+            M << "[src.name] added to slot with quantity [slot.quantity]."
+
+            var/padded_name = pad_string_to_length(uppertext("<font size=1>[src.name]"), 33)
+            M.client.vis_contents_map["inventory"].menu_items[M.inventory.Find(slot)].maptext = "[padded_name] x[slot.quantity]"
+         else
+            M << "No suitable slot found for [src.name]."
+         if(M.client)
+            M.client.vis_contents_map["inventory"].UpdateDisplayedSlots()
+
+item
+   proc
+      Use()
+         world << "Using [src] (no functionality yet)."
+
+item/consumable/potion
+   name = "potion"
+   stack_limit = 3
+   description = "Heals a single pokemon for 20!"
+   heal_amount = 20
 
 // Base Item Type
 item

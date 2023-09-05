@@ -23,6 +23,7 @@
 #include "Code\Globals\World_Loop.dm"
 #include "Code\Globals\World_New.dm"
 #include "Code\Items\Item_Core.dm"
+#include "Code\Mobs\Mob_Inventory.dm"
 #include "Code\Mobs\Mob_Vars.dm"
 #include "Code\Mobs\Creature_System\Creature_Manager.dm"
 #include "Code\Mobs\Creature_System\Creatures\0_Test_Creature.dm"
