@@ -22,12 +22,16 @@ var
 	list/mob/player/moving_players = list()
 
 mob
-	pixel_y = 4
-
-#define TELEPORT_FLAG "teleporting"
+	pixel_y = 4	// Pokemon Red offsets all mobs by 4 pixels.
 
 var
 	const
+		//MOB VARS
+		INVENTORY_SIZE_LIMIT = 20
+
+		//MOB FLAGS
+		TELEPORT_FLAG = "teleporting"
+
 		//CLIENT STATES
 		IN_GAME = "in_game"
 		IN_MENU = "in_menu"
@@ -38,9 +42,3 @@ var
 		BUTTON_LAYER = 102
 		CURSOR_LAYER = 103
 
-mob
-	verb
-		Test_Maptext(t as text)
-			maptext_width = 100
-			maptext_height = 100
-			maptext = "<font face='PKMN RBYGSC' size='1'>[t]"
