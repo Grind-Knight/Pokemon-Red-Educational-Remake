@@ -81,7 +81,7 @@ Be sure to follow the coding style and guidelines.
 
 ## License
 
-This project is licensed under the GNU General Public License v3 (GPLv3) - see the [LICENSE.md](LICENSE.md) file for details. By adhering to this license, contributors and users must follow the stipulations for sharing, modifying, and distributing the code, ensuring that the same freedoms are passed on to derivative works.
+This project is licensed under the GNU General Public License v3 (GPLv3) - see the [LICENSE](LICENSE) file for details. By adhering to this license, contributors and users must follow the stipulations for sharing, modifying, and distributing the code, ensuring that the same freedoms are passed on to derivative works.
 
 ## Acknowledgments
 
