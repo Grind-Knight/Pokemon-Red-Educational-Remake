@@ -7,6 +7,15 @@
 
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "Assets"
+#define FILE_DIR "Assets/Sprites"
+#define FILE_DIR "Assets/Sprites/Mobs"
+#define FILE_DIR "Assets/Sprites/Objects"
+#define FILE_DIR "Assets/Sprites/Objects/Buildings"
+#define FILE_DIR "Assets/Sprites/Objects/Indoor Objects"
+#define FILE_DIR "Assets/Sprites/Objects/Outdoor Objects"
+#define FILE_DIR "Assets/Sprites/Turfs"
+#define FILE_DIR "Assets/Sprites/UI"
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
