@@ -1,8 +1,10 @@
 turf
 	outdoor
 		icon = 'Assets/Sprites/Turfs/outdoor.dmi'
+	
 	indoor
 		icon = 'Assets/Sprites/Turfs/indoor.dmi'
+	
 	void_wall
 		icon = 'Assets/Sprites/Turfs/voidwall.dmi'
 		density = 1
@@ -10,6 +12,20 @@ turf
 		New()
 			alpha = 0
 			..()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // obj
 // 	pallet
 // 		buildings
