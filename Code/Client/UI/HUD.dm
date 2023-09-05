@@ -38,6 +38,8 @@ client
 		// Store the reference to the color filter in the client's color_filter variable
 		color_filter = overlay_plane_master.filters[overlay_plane_master.filters.len]
 
+
+// Code for the base hud for all menus
 obj/hud
 	icon = 'Assets/Sprites/UI/menu.dmi'
 	appearance_flags = PIXEL_SCALE
@@ -45,7 +47,48 @@ obj/hud
 	var
 		title
 		list/menu_items = list()	// List of items within the menu
+// End of our base hud
 
+
+// Code for our cursor object
+obj/hud/cursor
+	icon = 'Assets/Sprites/UI/cursor.dmi'
+	icon_state = "filled"
+	alpha = 0	// Cursor is 'off' by default.
+	layer = CURSOR_LAYER
+	plane = 10
+	var
+		obj/hud/target = null
+		current_pos = 1
+// End of cursor
+
+
+// Code for buttons within our menu
+obj/hud/button	// Something that can be interacted with. A button.
+	maptext = "default"
+	maptext_width = 100
+	var/obj/hud/parent_menu
+	var
+		button_id
+
+obj/hud/button
+	proc
+		MoveCursor(client/C, move_time = world.tick_lag)	// Move the cursor to this menu (or button, mostly)
+			// -8, 3 is just the offset for making the cursor look centered
+			animate(
+				C.vis_contents_map["cursor"],
+				pixel_x = pixel_x + parent_menu.pixel_x + -8,
+				pixel_y = pixel_y + parent_menu.pixel_y + 3,
+				time = move_time
+			)
+
+// End of buttons
+
+
+// Code for obj/hud/menu
+obj/hud/menu
+	var
+		current_displayed_start = 1
 
 obj/hud/menu
 	layer = MENU_LAYER
@@ -56,7 +99,6 @@ obj/hud/menu
 		M.Scale(0.1, 0.1)
 		animate(src, transform = M)
 
-
 obj/hud/menu
 	proc
 		ToggleMenu(client/C)
@@ -65,17 +107,26 @@ obj/hud/menu
 			else
 				OpenMenu(C)
 
-
 obj/hud/menu
 	proc
 		OpenMenu(client/C)
 			C.menu_stack += src
+			
+			// Make all open menu planes be set to 1. Along with their buttons
+			for(var/obj/hud/menu/all_menus in C.menu_stack)
+				all_menus.plane = 1
+				for(var/obj/hud/button/B in all_menus.menu_items)
+					B.plane = 1
+			
+			// Set the plane for current menu and their buttons to be 2
+			for(var/obj/hud/button/B in menu_items)
+				B.plane = 2
+			plane = 2
 
 			C.UpdateClientState(IN_MENU)
 
 			C.vis_contents_map["cursor"].alpha = 255
 			if(C.menu_stack.len)
-				//C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
 				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
 			else
 				C.vis_contents_map["cursor"].target = null
@@ -83,7 +134,7 @@ obj/hud/menu
 
 			C.vis_contents_map["cursor"].current_pos = 1
 			if(C.vis_contents_map["cursor"].target.menu_items.len) C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
-			
+
 			var/matrix/M = matrix()
 			M.Scale(1, 1)
 			animate(src, alpha = 255, transform = M, time = 1)
@@ -92,58 +143,45 @@ obj/hud/menu
 	proc
 		CloseMenu(client/C)
 			C.menu_stack -= src
-			C.UpdateClientState(IN_GAME)
 
 			if(C.menu_stack.len)
+				world << "went to [C.menu_stack[C.menu_stack.len]]"
 				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
+				C.vis_contents_map["cursor"].current_pos = 1
+				current_displayed_start = 1
+				UpdateDisplayedSlots()
+				if(C.vis_contents_map["cursor"].target.menu_items.len) C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
 			else
+				world << "went to no target"
 				C.vis_contents_map["cursor"].target = null
 				C.vis_contents_map["cursor"].alpha = 0
+				C.UpdateClientState(IN_GAME)
 
 			var/matrix/M = matrix()
 			M.Scale(0.1, 0.1)
 			animate(src, alpha = 0, transform = M, time = 1)
+			
+			//C.vis_contents_map.Remove(src)
+			// REMOVE MENU FROM VIS_CONTENTS INSTEAD OF SETTING ALPHA TO 0
 
-obj/hud
+obj/hud/menu
 	proc
-		OnButtonPressStart(client/C)
-			world << "Pressed Start on [src]."
+		UpdateDisplayedSlots()
+			// Clear currently displayed slots
+			vis_contents = list()
 
-obj/hud
-	proc
-		OnButtonPressSelect(client/C)
-			world << "Pressed Select on [src]."
-
-obj/hud
-	proc
-		OnButtonPressInteract(client/C)
-			world << "Pressed Interact on [src]."
-
-obj/hud
-	proc
-		OnButtonPressBack(client/C)
-			world << "Pressed Back on [src]."
-
-obj/hud/button	// Something that can be interacted with in the menu. A button.
-	maptext = "default"
-	maptext_width = 100
-	layer = BUTTON_LAYER
-	var/obj/hud/parent_menu
-	var
-		button_id
+			var/height_counter = 0
+			for(var/index = current_displayed_start to current_displayed_start + 4)
+				var/obj/hud/button/current_button = menu_items[index]
+				if(current_button)  // Check if the button exists
+					vis_contents.Add(current_button)
+					current_button.pixel_x = 56
+					current_button.pixel_y = 123 - height_counter
+					height_counter += 15
+// End of obj/hud/menu
 
 
-obj/hud/button
-	proc
-		MoveCursor(client/C, move_time = world.tick_lag)	// Move the cursor to this menu (or button, mostly)
-			animate(
-				C.vis_contents_map["cursor"],
-				pixel_x = pixel_x + parent_menu.pixel_x + C.vis_contents_map["cursor"].offset_x,
-				pixel_y = pixel_y + parent_menu.pixel_y + C.vis_contents_map["cursor"].offset_y,
-				time = move_time
-			)
-
-
+// Code for the main menu (what you see when you press start)
 obj/hud/menu/main_menu
 	icon_state = "main"
 	pixel_x = 40
@@ -157,6 +195,7 @@ obj/hud/menu/main_menu
 		for(var/i in old_menu_items)
 			var/obj/hud/button/ic = new()
 			ic.parent_menu = src
+			ic.layer = layer + 1
 			ic.button_id = i
 			ic.maptext = "<font size=1>[i]"
 			ic.pixel_x = 103
@@ -164,24 +203,27 @@ obj/hud/menu/main_menu
 			height_counter -= 16
 			menu_items += ic
 			vis_contents.Add(ic)
+// End of main menu
 
-		// for(var/i in menu_items)
-		// 	world << "[i]: [menu_items[i]]"
 
+// Code for the inventory menu
 obj/hud/menu/inventory
 	icon_state = "inventory"
+	menu_items = list()
+	New()
+		. = ..()
+		// This adds all of the inventory slots to our menu_items.
+		// But we only want to see 5 at a time, so that is handled differently.
+		for(var/i = 0; i < INVENTORY_SIZE_LIMIT; i++)
+			var/obj/hud/button/ic = new()
+			ic.parent_menu = src
+			ic.layer = layer + 1
+			ic.button_id = i
+			ic.maptext = "<font size=1>[i] EMPTY"
+			menu_items += ic
 
-
-obj/hud/cursor
-	icon = 'Assets/Sprites/UI/cursor.dmi'
-	icon_state = "filled"
-	alpha = 0	// Cursor is 'off' by default.
-	layer = CURSOR_LAYER
-	var
-		offset_x = -8
-		offset_y = 3
-		obj/hud/target = null
-		current_pos = 1
+		UpdateDisplayedSlots()
+// End of the inventory
 
 
 //Client side effects for the screen. Fading in/out, color changes, etc.
