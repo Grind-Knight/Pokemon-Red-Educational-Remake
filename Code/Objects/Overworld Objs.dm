@@ -5,8 +5,8 @@ obj
 		layer = EFFECTS_LAYER
 		New(loc)
 			. = ..()
-			alpha = 0
-			
+			alpha = 100
+
 proc
 	setup_dense_tiles(startingLoc, width, height, ignoreLoc = list())
 		for(var/i = 0; i < height; i++)
@@ -44,7 +44,7 @@ obj
 				if(!M.flags[TELEPORT_FLAG])
 					var/old_dir = M.dir
 					M.flags[TELEPORT_FLAG] = TRUE
-					
+
 					if(M.client) M.client.FadeToBlack()
 					sleep(5)
 
@@ -73,7 +73,7 @@ obj
 		density = 0//Buildings aren't dense here because we setup custom density obj's for them to allow door usage.
 
 obj
-	buildings	
+	buildings
 		var
 			tiles_wide = 1
 			tiles_tall = 1
@@ -107,12 +107,22 @@ obj
 			tiles_wide = 6
 			tiles_tall = 4
 			door_loc = list(3, 1)
+		Eight_by_Six
+			icon = 'Assets/Sprites/Objects/Buildings/128x96.dmi'
+			tiles_wide = 8
+			tiles_tall = 6
+			door_loc = list(5, 1)
+		Twelve_by_Six
+			icon = 'Assets/Sprites/Objects/Buildings/112x96.dmi'
+			tiles_wide = 12
+			tiles_tall = 6
+			door_loc = list(7, 1)
 //End of buildings
 
 //Indoor objects
 obj
 	objs_indoor
-		One_by_one
+		One_by_One
 			icon = 'Assets/Sprites/Objects/Indoor Objects/16x16.dmi'
 		One_by_Two
 			icon = 'Assets/Sprites/Objects/Indoor Objects/16x32.dmi'
@@ -131,4 +141,6 @@ obj
 	objs_outdoor
 		One_by_One
 			icon = 'Assets/Sprites/Objects/Outdoor Objects/16x16.dmi'
+		Two_by_Two
+			icon = 'Assets/Sprites/Objects/Outdoor Objects/32x32.dmi'
 //End of outdoor objects.

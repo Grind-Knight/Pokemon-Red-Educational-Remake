@@ -1,15 +1,43 @@
-turf
-	pallet
-		outdoor
-			icon = 'Assets/Sprites/Turfs/outdoor.dmi'
+// turf
+// 	pallet
+// 		outdoor
+// 			icon = 'Assets/Sprites/Turfs/outdoor.dmi'
 
-obj
-	pallet
-		buildings
-			house
-				icon = 'Assets/Sprites/Objects/Buildings/64x48.dmi'
-				icon_state = "pink_house"
-					
+// obj
+// 	pallet
+// 		buildings
+// 			house
+// 				icon = 'Assets/Sprites/Objects/Buildings/64x48.dmi'
+// 				icon_state = "pink_house"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///TEST BEGINS HERE
 // mob
 // 	verb
 // 		Recolor_Test()		
