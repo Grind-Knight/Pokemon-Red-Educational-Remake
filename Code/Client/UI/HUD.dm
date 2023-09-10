@@ -29,6 +29,8 @@ client
 		AddToVisContentsAndMap("cursor", /obj/hud/cursor)
 		AddToVisContentsAndMap("main_menu", /obj/hud/menu/main_menu)
 		AddToVisContentsAndMap("inventory", /obj/hud/menu/inventory)
+		AddToVisContentsAndMap("dialogue", /obj/hud/menu/dialogue)
+
 
 		// Add a color filter to the plane master
 		overlay_plane_master.filters += filter(
@@ -70,6 +72,7 @@ obj/hud/button	// Something that can be interacted with. A button.
 	var/obj/hud/parent_menu
 	var
 		button_id
+		cursor_style = "filled"
 
 obj/hud/button
 	proc
@@ -81,6 +84,9 @@ obj/hud/button
 				pixel_y = pixel_y + parent_menu.pixel_y + 3,
 				time = move_time
 			)
+
+			// Sets the cursors icon state based on the button it's hovering over
+			if(C.vis_contents_map["cursor"].icon_state != cursor_style)C.vis_contents_map["cursor"].icon_state = cursor_style
 
 // End of buttons
 

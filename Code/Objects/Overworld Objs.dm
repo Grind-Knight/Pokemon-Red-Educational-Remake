@@ -6,7 +6,7 @@ obj
 		layer = EFFECTS_LAYER
 		New(loc)
 			. = ..()
-			alpha = 100
+			alpha = 0
 
 proc
 	setup_dense_tiles(starting_loc, width, height, ignore_locs = list())
