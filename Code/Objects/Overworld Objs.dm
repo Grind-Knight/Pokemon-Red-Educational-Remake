@@ -1,6 +1,7 @@
 obj
 	dense_obj
 		icon = 'Assets/Sprites/Turfs/voidwall.dmi'
+		icon_state = "object"
 		density = 1	//Setting this true in case we ever change the parent obj density.
 		layer = EFFECTS_LAYER
 		New(loc)
@@ -21,6 +22,8 @@ obj
 
 //Teleporter
 obj/teleporter
+	Pallet
+	Viridian
 	icon = 'Assets/Sprites/Turfs/voidwall.dmi'
 	icon_state = "teleport"
 	New(loc)
@@ -35,12 +38,7 @@ obj/teleporter
 			var/mob/player/p = o
 			Teleport(p)
 
-mob
-	Bump(Obstacle)	// Mob bumping into something.
-		. = ..()
-		if(istype(Obstacle, /obj/teleporter))	// If that something is a teleporter...
-			var/obj/teleporter/tele = Obstacle
-			tele.Teleport(src)
+
 
 obj/teleporter
 	proc
@@ -158,7 +156,7 @@ obj/buildings
 		icon = 'Assets/Sprites/Objects/Buildings/64x64.dmi'
 		tiles_wide = 4
 		tiles_tall = 4
-		door_locs = list(list(2, 1), list(2, 4))
+		door_locs = list(list(2, 1))
 	Six_by_Four
 		icon = 'Assets/Sprites/Objects/Buildings/96x64.dmi'
 		tiles_wide = 6

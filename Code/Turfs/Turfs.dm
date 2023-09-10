@@ -1,6 +1,8 @@
 turf
 	outdoor
 		icon = 'Assets/Sprites/Turfs/outdoor.dmi'
+		var/jumpable = 0
+		var/jump_dir = null
 	
 	indoor
 		icon = 'Assets/Sprites/Turfs/indoor.dmi'
@@ -12,6 +14,8 @@ turf
 		New()
 			alpha = 0
 			..()
+	
+
 
 
 
