@@ -15,18 +15,46 @@ mob/player
 
 				flags[TELEPORT_FLAG] = TRUE
 				density = 0
-				//Currently this handles SOUTH only. For EAST/WEST jumping, animate pixel_x instead of pixel_y.
-				animate(src, pixel_y = 10, time = 2)
-				animate(client, pixel_y = -20, time = 4)	//Animating the client makes it appear more smooth
-
 				var/obj/Shadow/S = new(loc)	//New shadow object which is animated SOUTH.
-				animate(S, pixel_y = -36, time = 4)
+				switch(dir)
+					if(SOUTH)
+						//Currently this handles SOUTH only. For EAST/WEST jumping, animate pixel_x instead of pixel_y.
+						animate(src, pixel_y = 10, time = 2)
+						animate(client, pixel_y = -20, time = 4)	//Animating the client makes it appear more smooth
 
-				walk_towards(src, locate(my_x, my_y-2, my_z), 1)	//Walk towards the new location (south two tiles) at a lag of 1
+						
+						animate(S, pixel_y = -36, time = 4)
 
-				spawn(2)
-					animate(src, pixel_y = 4, time = 2)
-					animate(client, pixel_y = 0)
+						walk_towards(src, locate(my_x, my_y-2, my_z), 1)	//Walk towards the new location (south two tiles) at a lag of 1
+
+						spawn(2)
+							animate(src, pixel_y = 4, time = 2)
+							animate(client, pixel_y = 0)
+
+					if(EAST)
+						animate(src, pixel_y = 10, time = 2)						
+						spawn(1)
+							animate(S, pixel_x = 32, time = 3)
+							animate(client, pixel_x = 16, time = 4)	//Animating the client makes it appear more smooth
+
+						walk_towards(src, locate(my_x+2, my_y, my_z), 1)	//Walk towards the new location (south two tiles) at a lag of 1
+
+						spawn(2)
+							animate(src, pixel_y = 4, time = 2)
+							animate(client, pixel_x = 0)
+
+					if(WEST)
+						animate(src, pixel_y = 10, time = 2)
+						
+						spawn(1)
+							animate(S, pixel_x = -32, time = 3)
+							animate(client, pixel_x = -16, time = 4)	//Animating the client makes it appear more smooth
+
+						walk_towards(src, locate(my_x-2, my_y, my_z), 1)	//Walk towards the new location (south two tiles) at a lag of 1
+
+						spawn(2)
+							animate(src, pixel_y = 4, time = 2)
+							animate(client, pixel_x = 0)
 
 				spawn(5)
 					S.loc = null

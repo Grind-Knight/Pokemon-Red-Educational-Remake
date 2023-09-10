@@ -3,7 +3,7 @@ mob/player
       . = ..()
       players_in_world += src
       //loc = locate(101, 146, 1)
-      loc = locate(102, 199, 1)  //testing loc for fence jumping
+      loc = locate(218, 340, 1)  //testing loc for fence jumping
 mob/player
    Logout()
       . = ..()

@@ -23,7 +23,7 @@ mob
 				ExitTallGrass()
 
 	proc/IsOnTallGrass()
-		return loc?.icon_state == "tall_grass"
+		return loc?.icon_state == "tall_grass" || "forest_grass"
 
 	proc/EnterTallGrass()
 		vis_contents += _tall_grass_body_double ||= new
