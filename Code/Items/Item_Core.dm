@@ -44,7 +44,6 @@ proc
 item
    proc
       GiveItem(mob/M)
-         //world << "Gave [src] to [M]!"
          var/item_slot/slot = M.FindExistingOrEmptySlot(src)
          if(slot)
             if(!slot.stored_item)
@@ -66,6 +65,7 @@ item
 
 item/consumable/potion
    name = "potion"
+   //id = 1
    stack_limit = 3
    description = "Heals a single pokemon for 20!"
    heal_amount = 20
@@ -74,6 +74,7 @@ item/consumable/potion
 item
    var
       name
+      //id = 0
       stack_limit = 99
       description
 

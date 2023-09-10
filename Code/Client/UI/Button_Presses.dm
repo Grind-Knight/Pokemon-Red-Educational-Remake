@@ -72,6 +72,10 @@ client
 					if(/obj/hud/menu/inventory/)	// Cursor is over an inventory slot
 						if(mob.inventory[vis_contents_map["cursor"].current_pos].stored_item) mob.inventory[vis_contents_map["cursor"].current_pos].stored_item.Use()
 
+					if(/obj/hud/menu/dialogue/)
+						world << "Trying to interact with the dialogue menu!"
+						// Dialogue should progress here. If interacting while typing, make it instantly finish. If already finished, progress dialogue
+
 client
 	proc
 		BackButton()
