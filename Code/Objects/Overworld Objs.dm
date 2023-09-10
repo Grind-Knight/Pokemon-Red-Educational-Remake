@@ -24,6 +24,7 @@ obj
 obj/teleporter
 	Pallet
 	Viridian
+	Pewter
 	icon = 'Assets/Sprites/Turfs/voidwall.dmi'
 	icon_state = "teleport"
 	New(loc)
