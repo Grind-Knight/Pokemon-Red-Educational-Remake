@@ -35,6 +35,7 @@ var
 		//CLIENT STATES
 		IN_GAME = "in_game"
 		IN_MENU = "in_menu"
+		TEXT_POPULATING = "text_populating"
 
 		//LAYERS
 		HUD_LAYER = 100

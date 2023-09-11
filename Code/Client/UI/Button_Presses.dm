@@ -73,7 +73,9 @@ client
 						if(mob.inventory[vis_contents_map["cursor"].current_pos].stored_item) mob.inventory[vis_contents_map["cursor"].current_pos].stored_item.Use()
 
 					if(/obj/hud/menu/dialogue/)
+						//if(mob.flags[TEXT_POPULATING]) return
 						src << "Trying to interact with the dialogue menu!"
+						ProgressDialogue()
 						// Dialogue should progress here. If interacting while typing, make it instantly finish. If already finished, progress dialogue
 
 client
