@@ -27,6 +27,7 @@
 #include "Code\Client\UI\Button_Presses.dm"
 #include "Code\Client\UI\Client_Controls.dm"
 #include "Code\Client\UI\HUD.dm"
+#include "Code\Client\UI\HUD\UI_Dialogue.dm"
 #include "Code\Combat\Combat_Core.dm"
 #include "Code\Globals\_NOTES.dm"
 #include "Code\Globals\World_Globals.dm"
