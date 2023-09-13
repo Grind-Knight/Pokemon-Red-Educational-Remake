@@ -1,4 +1,3 @@
-// Define the plane_master object
 obj/plane_master
 	appearance_flags = PLANE_MASTER
 	screen_loc = "CENTER,CENTER"
@@ -11,8 +10,8 @@ client
 	proc
 		AddToVisContentsAndMap(key as text, obj_type)
 			var/obj/created_instance = new obj_type (src)
-			interface_overlay.vis_contents.Add(created_instance)
 			vis_contents_map[key] = created_instance
+
 
 client
 	var
@@ -56,7 +55,6 @@ obj/hud
 obj/hud/cursor
 	icon = 'Assets/Sprites/UI/cursor.dmi'
 	icon_state = "filled"
-	alpha = 0	// Cursor is 'off' by default.
 	layer = CURSOR_LAYER
 	plane = 10
 	var
@@ -69,8 +67,8 @@ obj/hud/cursor
 obj/hud/button	// Something that can be interacted with. A button.
 	maptext = "default"
 	maptext_width = 100
-	var/obj/hud/parent_menu
 	var
+		obj/hud/parent_menu
 		button_id
 		cursor_style = "filled"
 
@@ -91,10 +89,10 @@ obj/hud/button
 // End of buttons
 
 
-// Code for obj/hud/menu
+// Code for our base menu object.
 obj/hud/menu
 	var
-		current_displayed_start = 1
+		current_displayed_start = 1   // Where the cursor starts on the menu
 
 obj/hud/menu
 	layer = MENU_LAYER
@@ -131,16 +129,18 @@ obj/hud/menu
 
 			C.UpdateClientState(IN_MENU)
 
-			C.vis_contents_map["cursor"].alpha = 255
-			if(C.menu_stack.len)
-				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
+			// If the cursor isn't in our screen...
+			if(!(C.vis_contents_map["cursor"] in C.interface_overlay.vis_contents)) C.interface_overlay.vis_contents.Add(C.vis_contents_map["cursor"])
+			
+			if(C.menu_stack.len) C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
 			else
 				C.vis_contents_map["cursor"].target = null
-				C.vis_contents_map["cursor"].alpha = 0
+				C.interface_overlay.vis_contents.Remove(C.vis_contents_map["cursor"])
 
 			C.vis_contents_map["cursor"].current_pos = 1
 			if(C.vis_contents_map["cursor"].target.menu_items.len) C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
 
+			C.interface_overlay.vis_contents.Add(src)
 			var/matrix/M = matrix()
 			M.Scale(1, 1)
 			animate(src, alpha = 255, transform = M, time = 1)
@@ -150,25 +150,25 @@ obj/hud/menu
 		CloseMenu(client/C)
 			C.menu_stack -= src
 
-			if(C.menu_stack.len)
+			if(C.menu_stack.len)	// If we still have menus open
 				world << "went to [C.menu_stack[C.menu_stack.len]]"
 				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
 				C.vis_contents_map["cursor"].current_pos = 1
 				current_displayed_start = 1
 				UpdateDisplayedSlots()
 				if(C.vis_contents_map["cursor"].target.menu_items.len) C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
-			else
+			else	// No menus are open now
 				world << "went to no target"
 				C.vis_contents_map["cursor"].target = null
-				C.vis_contents_map["cursor"].alpha = 0
+				C.interface_overlay.vis_contents.Remove(C.vis_contents_map["cursor"])
 				C.UpdateClientState(IN_GAME)
 
 			var/matrix/M = matrix()
 			M.Scale(0.1, 0.1)
 			animate(src, alpha = 0, transform = M, time = 1)
 			
-			//C.vis_contents_map.Remove(src)
-			// REMOVE MENU FROM VIS_CONTENTS INSTEAD OF SETTING ALPHA TO 0
+			C.interface_overlay.vis_contents.Remove(src)
+
 
 obj/hud/menu
 	proc
@@ -179,57 +179,12 @@ obj/hud/menu
 			var/height_counter = 0
 			for(var/index = current_displayed_start to current_displayed_start + 4)
 				var/obj/hud/button/current_button = menu_items[index]
-				if(current_button)  // Check if the button exists
+				if(current_button)
 					vis_contents.Add(current_button)
 					current_button.pixel_x = 56
 					current_button.pixel_y = 123 - height_counter
 					height_counter += 15
-// End of obj/hud/menu
-
-
-// Code for the main menu (what you see when you press start)
-obj/hud/menu/main_menu
-	icon_state = "main"
-	pixel_x = 40
-	pixel_y = 48
-	menu_items = list("POKéDEX", "POKéMON", "ITEM", "TRAINER", "SAVE", "OPTION", "EXIT")
-	New(loc)
-		. = ..()
-		var/height_counter = 0
-		var/list/old_menu_items = menu_items
-		menu_items = list()
-		for(var/i in old_menu_items)
-			var/obj/hud/button/ic = new()
-			ic.parent_menu = src
-			ic.layer = layer + 1
-			ic.button_id = i
-			ic.maptext = "<font size=1>[i]"
-			ic.pixel_x = 103
-			ic.pixel_y = 136 + height_counter
-			height_counter -= 16
-			menu_items += ic
-			vis_contents.Add(ic)
-// End of main menu
-
-
-// Code for the inventory menu
-obj/hud/menu/inventory
-	icon_state = "inventory"
-	menu_items = list()
-	New()
-		. = ..()
-		// This adds all of the inventory slots to our menu_items.
-		// But we only want to see 5 at a time, so that is handled differently.
-		for(var/i = 0; i < INVENTORY_SIZE_LIMIT; i++)
-			var/obj/hud/button/ic = new()
-			ic.parent_menu = src
-			ic.layer = layer + 1
-			ic.button_id = i
-			ic.maptext = "<font size=1>[i] EMPTY"
-			menu_items += ic
-
-		UpdateDisplayedSlots()
-// End of the inventory
+// End of base menu
 
 
 //Client side effects for the screen. Fading in/out, color changes, etc.

@@ -15,3 +15,9 @@
 mob/player
 	icon = 'Assets/Sprites/Mobs/character_overworld_sprites.dmi'
 	icon_state = "red"
+
+client
+	Stat()
+		. = ..()
+		stat("CPU:", world.cpu)
+		stat("Client State:", client_state)
