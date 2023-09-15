@@ -31,6 +31,9 @@ client
 		AddToVisContentsAndMap("dialogue", /obj/hud/menu/dialogue)
 
 
+		AddToVisContentsAndMap("battle_background", /obj/hud/menu/battle_background)
+
+
 		// Add a color filter to the plane master
 		overlay_plane_master.filters += filter(
 			type = "color",
@@ -98,10 +101,10 @@ obj/hud/menu
 	layer = MENU_LAYER
 	New()
 		. = ..()
-		alpha = 0	// Menu's are closed by default.
-		var/matrix/M = matrix()
-		M.Scale(0.1, 0.1)
-		animate(src, transform = M)
+		// alpha = 0	// Menu's are closed by default.
+		// var/matrix/M = matrix()
+		// M.Scale(0.1, 0.1)
+		// animate(src, transform = M)
 
 obj/hud/menu
 	proc
@@ -154,8 +157,6 @@ obj/hud/menu
 				world << "went to [C.menu_stack[C.menu_stack.len]]"
 				C.vis_contents_map["cursor"].target = C.menu_stack[C.menu_stack.len]
 				C.vis_contents_map["cursor"].current_pos = 1
-				current_displayed_start = 1
-				UpdateDisplayedSlots()
 				if(C.vis_contents_map["cursor"].target.menu_items.len) C.vis_contents_map["cursor"].target.menu_items[1].MoveCursor(C)
 			else	// No menus are open now
 				world << "went to no target"

@@ -1,4 +1,4 @@
 mob
    var
       list/flags = list()
-      //list/inventory = list("POTION" = 5)
+      combat_instance/ci   // So we know if our mob is in combat, and which combat instance they're in

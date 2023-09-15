@@ -35,6 +35,7 @@ var
 		//CLIENT STATES
 		IN_GAME = "in_game"
 		IN_MENU = "in_menu"
+		IN_BATTLE = "in_battle"
 		TEXT_POPULATING = "text_populating"
 
 		//LAYERS

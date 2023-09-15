@@ -15,3 +15,9 @@ obj/hud/menu/inventory
 			menu_items += ic
 
 		UpdateDisplayedSlots()
+
+obj/hud/menu/inventory
+	OpenMenu(client/C)
+		. = ..()
+		current_displayed_start = 1
+		UpdateDisplayedSlots()
